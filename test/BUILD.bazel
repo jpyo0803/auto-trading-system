@@ -1,0 +1,25 @@
+load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library")
+load("//:windows_dll_library.bzl", "windows_dll_library")
+
+cc_test(
+    name = "hello_test",
+    size = "small",
+    srcs = ["hello_test.cc"],
+    deps = [
+        ":test_lib",
+        "@com_google_googletest//:gtest_main"
+    ],
+)
+
+windows_dll_library(
+    name = "test_lib",
+    hdrs = ["test_lib.h"],
+    srcs = ["test_lib.cc"],
+    copts = ["/DCOMPILING_DLL"],
+)
+
+cc_binary(
+    name = "dll_load_example",
+    srcs = ["dll_load_example.cc"],
+    data = [":test_lib.dll"],
+)
