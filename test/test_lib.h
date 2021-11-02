@@ -9,4 +9,6 @@
 
 extern "C" DLL_EXPORT void PrintHello();
 
-#endif // TEST_TEST_LIB_H_
+extern "C" DLL_EXPORT int Add(int a, int b);
+
+#endif  // TEST_TEST_LIB_H_

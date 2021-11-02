@@ -1,4 +1,5 @@
 load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library")
+load("@io_bazel_rules_go//go:def.bzl", "go_binary")
 load("//:windows_dll_library.bzl", "windows_dll_library")
 
 cc_test(
@@ -7,19 +8,25 @@ cc_test(
     srcs = ["hello_test.cc"],
     deps = [
         ":test_lib",
-        "@com_google_googletest//:gtest_main"
+        "@com_google_googletest//:gtest_main",
     ],
 )
 
 windows_dll_library(
     name = "test_lib",
-    hdrs = ["test_lib.h"],
     srcs = ["test_lib.cc"],
+    hdrs = ["test_lib.h"],
     copts = ["/DCOMPILING_DLL"],
 )
 
 cc_binary(
-    name = "dll_load_example",
+    name = "dll_load_example_cc",
     srcs = ["dll_load_example.cc"],
+    data = [":test_lib.dll"],
+)
+
+go_binary(
+    name = "dll_load_example_go",
+    srcs = ["dll_load_example.go"],
     data = [":test_lib.dll"],
 )
